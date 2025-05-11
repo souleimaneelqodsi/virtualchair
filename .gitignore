@@ -1,0 +1,6 @@
+.idea
+.ropeproject
+.ruff_cache
+venv
+.env
+pyrightconfig.json
