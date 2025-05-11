@@ -1,2 +1,8 @@
 .flaskenv
 secrets.txt
+.ropeproject
+.ruff_cache
+.idea
+*.env
+.env
+pyrightconfig.json
