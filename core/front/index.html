@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EasyChair</title>
     <link rel="icon" href="data/logo.png">
-
+    <script defer src="/scrpt/inscription.js"></script>
     <link rel="stylesheet" href="style/style.css" />
   </head>
   <style>
@@ -41,12 +41,15 @@
             soumissions, évaluations, et décisions en un seul endroit.
           </p>
           <div class="hero-buttons">
-            <a href="#/login" class="hero-btn primary">Connexion</a>
+            <a href="#/inscription" class="hero-btn primary" onclick="loadPage('inscription.html'); return false;">Créer un compte</a>
+
           </div>
         </div>
       </div>
     </header>
-
+    <div id="app-content" class="vc-main">
+      <!-- Le contenu de la page sera injecté ici -->
+    </div>
     <main class="vc-main">
       <!-- Section 1 : Présentation -->
       <section class="vc-section intro">
