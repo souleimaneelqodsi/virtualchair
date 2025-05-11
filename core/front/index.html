@@ -4,24 +4,24 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>EasyChair</title>
-        <link rel="icon" href="data/logo.png" />
+        <link rel="icon" href="../data/logo.png" />
         <script defer src="script/inscription.js"></script>
         <link rel="stylesheet" href="style/style.css" />
     </head>
     <style>
-        /* header {
-      height: 700px;
-      background: url("data/header.png") no-repeat center center;
-      background-size: cover;
-      position: relative;
-    } */
+        header {
+            height: 700px;
+            background: url("../data/header.png") no-repeat center center;
+            background-size: cover;
+            position: relative;
+        }
     </style>
     <body>
         <header class="hero">
             <div class="top-head">
                 <div class="logo">
                     <img
-                        src="data/logo.png"
+                        src="../data/logo.png"
                         alt="Logo VirtualChair"
                         class="logo-vc"
                     />
@@ -49,7 +49,7 @@
                         <a
                             href="#/inscription"
                             class="hero-btn primary"
-                            onclick="loadPage('inscription.html'); return false;"
+                            onclick="loadPage('./inscription.html'); return false;"
                             >Créer un compte</a
                         >
                     </div>
