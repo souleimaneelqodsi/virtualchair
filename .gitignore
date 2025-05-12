@@ -7,3 +7,4 @@ secrets.txt
 venv
 .env
 pyrightconfig.json
+core/__pycache__
