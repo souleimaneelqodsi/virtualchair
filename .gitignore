@@ -4,5 +4,6 @@ secrets.txt
 .ruff_cache
 .idea
 *.env
+venv
 .env
 pyrightconfig.json
