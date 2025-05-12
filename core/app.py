@@ -69,11 +69,30 @@ else:
 
 # --- Flask-RESTful Setup ---
 api = Api(app, prefix="/api")
+from core.controllers.conference_controller import ConferenceCreateResource, ConferenceListResource
+from core.controllers.conference_controller import ConferenceDetailResource
+from core.controllers.conference_controller import AssignReviewerResource
+from core.controllers.conference_controller import SubmitReviewResource
+from core.controllers.conference_controller import PaperReviewsResource
+
+
+
+
 
 # --- Register API Resources (Controllers) ---
 # from core.controllers.user_resource import UserListResource, UserResource
 # api.add_resource(UserListResource, '/users')
 # api.add_resource(UserResource, '/users/<string:user_id>')
+api.add_resource(ConferenceCreateResource, '/conferences')
+api.add_resource(ConferenceListResource, '/conferences')
+api.add_resource(ConferenceDetailResource, '/conferences/<string:conf_id>')
+api.add_resource(AssignReviewerResource, '/conferences/<string:conf_id>/assign-reviewer')
+api.add_resource(SubmitReviewResource, '/papers/<string:paper_id>/review')
+api.add_resource(PaperReviewsResource, '/papers/<string:paper_id>/reviews')
+
+
+
+
 
 
 # --- Basic Routes ---
