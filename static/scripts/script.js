@@ -168,6 +168,10 @@ function loadLogin() {
 
         const result = await res.json();
         if (res.ok) {
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('username', result.username);
+          localStorage.setItem('email', result.email);
+          localStorage.setItem('id', result.id);
           alert('Connexion réussie');
           window.location.hash = '#home';
         } else {
@@ -198,6 +202,10 @@ function loadRegister() {
 
         const result = await res.json();
         if (res.ok) {
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('username', result.username);
+          localStorage.setItem('email', result.email);
+          localStorage.setItem('id', result.id);
           alert('Inscription réussie');
           window.location.hash = '#home';
         } else {
