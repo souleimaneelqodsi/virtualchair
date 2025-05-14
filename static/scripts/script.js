@@ -146,6 +146,76 @@ function loadConferenceDetail(id) {
   });
 }
 
+
+
+
+
+
+function loadLogin() {
+  loadView('views/login.html', () => {
+    const form = document.getElementById('login-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          alert('Connexion réussie');
+          window.location.hash = '#home';
+        } else {
+          alert(result.message || 'Erreur de connexion');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Erreur réseau');
+      }
+    });
+  });
+}
+
+function loadRegister() {
+  loadView('views/register.html', () => {
+    const form = document.getElementById('register-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          alert('Inscription réussie');
+          window.location.hash = '#home';
+        } else {
+          alert(result.message || 'Erreur lors de l’inscription');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Erreur réseau');
+      }
+    });
+  });
+}
+
+
+
+
+
+
 function routeFromHash() {
   const hash = window.location.hash;
 
@@ -155,11 +225,17 @@ function routeFromHash() {
     loadCreateConference();
   } else if (hash.startsWith('#conference/')) {
     const id = hash.split('/')[1];
-    loadConferenceDetail(id);
+    loadConferenceDetail(id);}
+    else if (hash === '#login') {
+    loadLogin();}
+    else if (hash === '#register') {
+    loadRegister();
   } else {
     loadHome();
   }
 }
+
+
 
 window.addEventListener('hashchange', routeFromHash);
 window.addEventListener('DOMContentLoaded', routeFromHash);
