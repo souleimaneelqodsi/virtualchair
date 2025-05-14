@@ -1,6 +1,11 @@
-.idea
+
+.flaskenv
+secrets.txt
 .ropeproject
 .ruff_cache
+.idea
+*.env
 venv
 .env
 pyrightconfig.json
+core/__pycache__

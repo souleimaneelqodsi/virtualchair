@@ -1,182 +1,122 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>EasyChair</title>
-        <link rel="icon" href="../data/logo.png" />
-        <script defer src="script/inscription.js"></script>
-        <link rel="stylesheet" href="style/style.css" />
-    </head>
-    <style>
-        header {
-            height: 700px;
-            background: url("../data/header.png") no-repeat center center;
-            background-size: cover;
-            position: relative;
-        }
-    </style>
-    <body>
-        <header class="hero">
-            <div class="top-head">
-                <div class="logo">
-                    <img
-                        src="../data/logo.png"
-                        alt="Logo VirtualChair"
-                        class="logo-vc"
-                    />
-                    <h1>VirtualChair</h1>
-                </div>
-                <nav>
-                    <ul>
-                        <li><a href="#home">Accueil</a></li>
-                        <li><a href="#conferences">Conférences</a></li>
-                        <li><a href="#about">À propos</a></li>
-                    </ul>
-                </nav>
-                <a href="#/login" class="cnx">Connexion</a>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VirtualChair</title>
+    <link rel="icon" href="data/logo.png" />
 
-            <div class="hero-overlay">
-                <div class="hero-content">
-                    <h1>Bienvenue sur VirtualChair</h1>
-                    <p>
-                        La plateforme dédiée à la gestion des conférences
-                        scientifiques : soumissions, évaluations, et décisions
-                        en un seul endroit.
-                    </p>
-                    <div class="hero-buttons">
-                        <a
-                            href="#/inscription"
-                            class="hero-btn primary"
-                            onclick="loadPage('./inscription.html'); return false;"
-                            >Créer un compte</a
-                        >
-                    </div>
-                </div>
-            </div>
-        </header>
-        <div id="app-content" class="vc-main">
-            <!-- Le contenu de la page sera injecté ici -->
+    <link rel="stylesheet" href="style/style.css" />
+    <link rel="stylesheet" href="style/conferences.css">
+    <link rel="stylesheet" href="style/conference-detail.css">
+
+
+  </head>
+  <style>
+    /* header {
+      height: 700px;
+      background: url("data/header.png") no-repeat center center;
+      background-size: cover;
+      position: relative;
+    } */
+  </style>
+  <body>
+    <header class="hero">
+      <div class="top-head">
+        <a href="#home">
+          <div class="logo">
+            <img src="data/logo.png" alt="Logo VirtualChair" class="logo-vc" />
+            <h1>VirtualChair</h1>
+          </div>
+        </a>
+        <nav>
+          <ul>
+            <li><a href="#home">Accueil</a></li>
+            <li><a href="#conferences">Conférences</a></li>
+            <li><a href="#about">À propos</a></li>
+          </ul>
+        </nav>
+        <a href="#/login" class="cnx">Connexion</a>
+      </div>
+
+      <div class="hero-overlay">
+        <div class="hero-content">
+          <h1>Bienvenue sur VirtualChair</h1>
+          <p>
+            La plateforme dédiée à la gestion des conférences scientifiques :
+            soumissions, évaluations, et décisions en un seul endroit.
+          </p>
+          <div class="hero-buttons">
+            <a href="#/login" class="hero-btn primary">Connexion</a>
+          </div>
         </div>
-        <main class="vc-main">
-            <!-- Section 1 : Présentation -->
-            <section class="vc-section intro">
-                <h2>Pourquoi choisir VirtualChair ?</h2>
-                <p>
-                    VirtualChair est une plateforme académique complète pour la
-                    gestion des conférences scientifiques : soumissions,
-                    évaluations, décisions et publications, le tout en un seul
-                    endroit.
-                </p>
-            </section>
+      </div>
+    </header>
 
-            <!-- Section 2 : Fonctionnalités -->
-            <section class="vc-section features">
-                <h2>Fonctionnalités clés</h2>
-                <div class="vc-features-grid">
-                    <div class="feature">
-                        <h3>Soumission en ligne</h3>
-                        <p>
-                            Soumettez vos articles facilement via notre
-                            interface intuitive.
-                        </p>
-                    </div>
-                    <div class="feature">
-                        <h3>Évaluation par les pairs</h3>
-                        <p>
-                            Processus d'évaluation rigoureux pour garantir la
-                            qualité scientifique.
-                        </p>
-                    </div>
-                    <div class="feature">
-                        <h3>Gestion des comités</h3>
-                        <p>
-                            Outils dédiés pour les organisateurs et les membres
-                            du comité.
-                        </p>
-                    </div>
-                    <div class="feature">
-                        <h3>Publication intégrée</h3>
-                        <p>
-                            Publiez les actes de conférence directement depuis
-                            la plateforme.
-                        </p>
-                    </div>
-                </div>
-            </section>
+    <main class="vc-main">
+      <section id="spa-container"></section>
+    </main>
 
-            <!-- Section 3 : Appel à l'action -->
-            <section class="vc-section cta">
-                <h2>Prêt à organiser votre conférence ?</h2>
-                <p>
-                    Rejoignez VirtualChair et simplifiez la gestion de vos
-                    événements scientifiques.
-                </p>
-                <a href="#/login" class="vc-btn primary">Créer un compte</a>
-            </section>
-        </main>
+    <footer class="vc-footer">
+      <div class="vc-footer-container">
+        <!-- Colonne Présentation -->
+        <div class="vc-footer-section about">
+          <h2>🎓 VirtualChair</h2>
+          <p>
+            Plateforme académique développée dans le cadre du projet GLA à
+            l'Université Paris-Saclay. VirtualChair facilite la gestion des
+            conférences scientifiques : soumissions, évaluations, décisions.
+          </p>
+        </div>
 
-        <footer class="vc-footer">
-            <div class="vc-footer-container">
-                <!-- Colonne Présentation -->
-                <div class="vc-footer-section about">
-                    <h2>🎓 VirtualChair</h2>
-                    <p>
-                        Plateforme académique développée dans le cadre du projet
-                        GLA à l'Université Paris-Saclay. VirtualChair facilite
-                        la gestion des conférences scientifiques : soumissions,
-                        évaluations, décisions.
-                    </p>
-                </div>
+        <!-- Colonne Auteurs -->
+        <div class="vc-footer-section team">
+          <h3>👨‍💻 Membres du projet</h3>
+          <ul>
+            <li><strong>Mohammed</strong> – Frontend & UI</li>
+            <li><strong>Abdel Baki</strong> – Frontend & UI</li>
+            <li><strong>Soulaimane</strong> – Backend & API</li>
+            <li><strong>Massyl</strong> – Backend & API</li>
+          </ul>
+        </div>
 
-                <!-- Colonne Auteurs -->
-                <div class="vc-footer-section team">
-                    <h3>👨‍💻 Membres du projet</h3>
-                    <ul>
-                        <li><strong>Mohammed</strong> – Frontend & UI</li>
-                        <li><strong>Abdel Baki</strong> – Frontend & UI</li>
-                        <li><strong>Soulaimane</strong> – Backend & API</li>
-                        <li><strong>Massyl</strong> – Backend & API</li>
-                    </ul>
-                </div>
+        <!-- Colonne Ressources -->
+        <div class="vc-footer-section links">
+          <h3>🔗 Liens utiles</h3>
+          <ul>
+            <li><a href="#home">Accueil</a></li>
+            <li><a href="#conferences">Conférences</a></li>
+            <li><a href="#about">À propos</a></li>
+            <li><a href="#">GitHub du projet</a></li>
+          </ul>
+        </div>
 
-                <!-- Colonne Ressources -->
-                <div class="vc-footer-section links">
-                    <h3>🔗 Liens utiles</h3>
-                    <ul>
-                        <li><a href="#home">Accueil</a></li>
-                        <li><a href="#conferences">Conférences</a></li>
-                        <li><a href="#about">À propos</a></li>
-                        <li><a href="#">GitHub du projet</a></li>
-                    </ul>
-                </div>
+        <!-- Colonne Réseaux -->
+        <div class="vc-footer-section social">
+          <h3>📣 Restez connectés</h3>
+          <div class="social-icons">
+            <a href="#"><span>🌐</span> Site</a>
+            <a href="#"><span>📘</span> Facebook</a>
+            <a href="#"><span>🐦</span> Twitter</a>
+            <a href="#"><span>📸</span> Instagram</a>
+          </div>
+        </div>
+      </div>
 
-                <!-- Colonne Réseaux -->
-                <div class="vc-footer-section social">
-                    <h3>📣 Restez connectés</h3>
-                    <div class="social-icons">
-                        <a href="#"><span>🌐</span> Site</a>
-                        <a href="#"><span>📘</span> Facebook</a>
-                        <a href="#"><span>🐦</span> Twitter</a>
-                        <a href="#"><span>📸</span> Instagram</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ligne finale -->
-            <div class="vc-footer-bottom">
-                <p>© 2025 VirtualChair – GLA | Université Paris-Saclay</p>
-                <p>
-                    Projet académique réalisé dans un cadre pédagogique – Voir
-                    la
-                    <a
-                        href="https://github.com/souleimaneelqodsi/virtualchair/blob/main/LICENSE"
-                        >license</a
-                    >
-                    pour plus d'infos.
-                </p>
-            </div>
-        </footer>
-    </body>
+      <!-- Ligne finale -->
+      <div class="vc-footer-bottom">
+        <p>© 2025 VirtualChair – GLA | Université Paris-Saclay</p>
+        <p>
+          Projet académique réalisé dans un cadre pédagogique – Voir la
+          <a
+            href="https://github.com/souleimaneelqodsi/virtualchair/blob/main/LICENSE"
+            >license</a
+          >
+          pour plus d'infos.
+        </p>
+      </div>
+    </footer>
+    <script src="scripts/conferences.js"></script>
+  </body>
 </html>
