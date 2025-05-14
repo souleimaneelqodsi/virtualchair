@@ -1,7 +1,6 @@
 // conferences.js - SPA dynamique avec vues HTML partielles
 
 const container = document.getElementById('spa-container');
-const isChair = true; // Simulation : rôle utilisateur
 
 function loadView(viewPath, callback) {
   fetch(viewPath)
@@ -12,12 +11,11 @@ function loadView(viewPath, callback) {
     });
 }
 
-function loadCreateConference() {
-  if (!isChair) {
-    container.innerHTML = '<p>Accès refusé : seuls les Chairs peuvent créer une conférence.</p>';
-    return;
-  }
+function loadHome() {
+  loadView('views/home.html');
+}
 
+function loadCreateConference() {
   loadView('views/create-conference.html', () => {
     const form = document.getElementById('create-form');
     form.addEventListener('submit', async (e) => {
@@ -26,16 +24,18 @@ function loadCreateConference() {
       const data = Object.fromEntries(formData);
 
       try {
-        const res = await fetch('../conferences', {
+        const res = await fetch('/api/conferences', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
+
+        const result = await res.json();
         if (res.ok) {
           alert('Conférence créée avec succès');
           window.location.hash = '#conferences';
         } else {
-          alert('Erreur lors de la création');
+          alert(result.message || 'Erreur lors de la création');
         }
       } catch (err) {
         console.error(err);
@@ -50,28 +50,28 @@ function loadListConferences() {
     const list = document.getElementById('conf-list');
     const addBtnContainer = document.getElementById('add-conf-container');
 
-    // Bouton Ajouter (Chair uniquement)
-    if (isChair) {
-      const btn = document.createElement('button');
-      btn.className = 'vc-btn primary';
-      btn.innerText = 'Ajouter une Conférence';
-      btn.onclick = () => window.location.hash = '#create';
-      addBtnContainer.appendChild(btn);
-    }
+    const btn = document.createElement('button');
+    btn.className = 'vc-btn primary';
+    btn.innerText = 'Ajouter une Conférence';
+    btn.onclick = () => window.location.hash = '#create';
+    addBtnContainer.appendChild(btn);
 
-    // Chargement des conférences
-    fetch('../conferences')
-      .then(res => res.json())
-      .then(data => {
-        const loading = document.getElementById('loading-msg');
-        if (loading) loading.remove();
+    fetch('/api/conferences')
+      .then(res => res.json().then(data => ({ status: res.status, body: data })))
+      .then(({ status, body }) => {
+        list.innerHTML = '';
 
-        if (data.length === 0) {
-          list.innerHTML = '<p>Aucune conférence trouvée.</p>';
+        if (status !== 200) {
+          list.innerHTML = `<p style="color:red;text-align:center">${body.message || 'Erreur lors du chargement des conférences.'}</p>`;
           return;
         }
 
-        data.forEach(conf => {
+        if (!Array.isArray(body) || body.length === 0) {
+          list.innerHTML = '<p style="text-align:center; color:#888">Aucune conférence disponible pour le moment.</p>';
+          return;
+        }
+
+        body.forEach(conf => {
           const card = document.createElement('div');
           card.className = 'conference-card';
 
@@ -81,59 +81,89 @@ function loadListConferences() {
             <p><strong>Lieu :</strong> ${conf.location}</p>
           `;
 
-          // Suppression (Chair uniquement)
-          if (isChair) {
-            const delBtn = document.createElement('button');
-            delBtn.innerText = '🗑 Supprimer';
-            delBtn.className = 'conf-delete-btn';
-            delBtn.onclick = async () => {
-              if (confirm(`Supprimer la conférence \"${conf.name}\" ?`)) {
-                try {
-                  const res = await fetch(`/conferences/${conf.id}`, {
-                    method: 'DELETE'
-                  });
-                  if (res.ok) {
-                    alert('Conférence supprimée');
-                    loadListConferences();
-                  } else {
-                    alert('Erreur lors de la suppression');
-                  }
-                } catch (err) {
-                  console.error(err);
-                  alert('Erreur réseau');
+          const delBtn = document.createElement('button');
+          delBtn.innerText = '🗑 Supprimer';
+          delBtn.className = 'conf-delete-btn';
+          delBtn.onclick = async (e) => {
+            e.stopPropagation();
+            if (confirm(`Supprimer la conférence \"${conf.name}\" ?`)) {
+              try {
+                const res = await fetch(`/api/conferences/${conf.id}`, {
+                  method: 'DELETE'
+                });
+                const msg = await res.json();
+                if (res.ok) {
+                  alert('Conférence supprimée');
+                  loadListConferences();
+                } else {
+                  alert(msg.message || 'Erreur lors de la suppression');
                 }
+              } catch (err) {
+                console.error(err);
+                alert('Erreur réseau');
               }
-            };
-            card.appendChild(delBtn);
-          }
+            }
+          };
+          card.appendChild(delBtn);
 
-          // Cliquez pour voir les détails
           card.addEventListener('click', () => {
             window.location.hash = `#conference/${conf.id}`;
           });
 
           list.appendChild(card);
         });
+      })
+      .catch(err => {
+        console.error(err);
+        list.innerHTML = '<p style="text-align:center; color:#c00">Impossible de charger les conférences. Veuillez réessayer plus tard.</p>';
       });
   });
 }
 
-function loadHome() {
-  loadView('views/home.html');
+function loadConferenceDetail(id) {
+  loadView('views/detail-conference.html', () => {
+    const detail = document.getElementById('conference-detail');
+
+    fetch(`/api/conferences/${id}`)
+      .then(res => res.json().then(data => ({ status: res.status, body: data })))
+      .then(({ status, body }) => {
+        if (status !== 200) {
+          detail.innerHTML = `<p style="color:red;text-align:center">${body.message || 'Erreur lors du chargement de la conférence.'}</p>`;
+          return;
+        }
+
+        detail.innerHTML = `
+          <h3>${body.name}</h3>
+          <p><strong>Date :</strong> ${body.date}</p>
+          <p><strong>Lieu :</strong> ${body.location}</p>
+          <a href="#conferences" class="vc-btn primary">&larr; Retour</a>
+        `;
+      })
+      .catch(err => {
+        console.error(err);
+        detail.innerHTML = '<p style="text-align:center; color:#c00">Impossible de charger les détails de la conférence.</p>';
+      });
+  });
 }
 
 function routeFromHash() {
   const hash = window.location.hash;
+
   if (hash === '#conferences') {
     loadListConferences();
   } else if (hash === '#create') {
     loadCreateConference();
+  } else if (hash.startsWith('#conference/')) {
+    const id = hash.split('/')[1];
+    loadConferenceDetail(id);
   } else {
     loadHome();
   }
 }
 
 window.addEventListener('hashchange', routeFromHash);
+window.addEventListener('DOMContentLoaded', routeFromHash);
+
 window.addEventListener('DOMContentLoaded', routeFromHash);
 
 function loadHome() {
