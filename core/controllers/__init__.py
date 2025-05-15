@@ -7,3 +7,8 @@ from user_controller import (
     UserByEmailResource,
     AllUsersResource,
 )
+
+from conference_controller import (
+    ConferenceDetailResource,
+    ConferenceListCreateResource,
+)

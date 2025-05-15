@@ -6,7 +6,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 import boto3
 
-# Import the Config class from your config.py
 from config import Config
 
 app = Flask(__name__, static_folder="../static", static_url_path="/static")
@@ -73,7 +72,9 @@ else:
 # --- Flask-RESTful Setup ---
 api = Api(app, prefix="/api")
 
+
 # --- Register API Resources (Controllers) ---
+
 from .controllers import (
     RegisterResource,
     LoginResource,
@@ -82,6 +83,8 @@ from .controllers import (
     UserByUsernameResource,
     UserByEmailResource,
     AllUsersResource,
+    ConferenceDetailResource,
+    ConferenceListCreateResource,
 )
 
 api.add_resource(RegisterResource, "/users/register")
@@ -91,6 +94,9 @@ api.add_resource(UserByIdResource, "/users/<string:user_id>")
 api.add_resource(UserByUsernameResource, "/users/<string:username>")
 api.add_resource(UserByEmailResource, "/users/<string:email>")
 api.add_resource(AllUsersResource, "/users")
+
+api.add_resource(ConferenceListCreateResource, "/conferences")
+api.add_resource(ConferenceDetailResource, "/conferences/<string:conf_id>")
 
 
 # --- Post/pre-request ---

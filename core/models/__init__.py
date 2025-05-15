@@ -10,3 +10,4 @@ from ..tables import (
 )
 
 from .user_model import UserModel
+from .conference_model import ConferenceModel
