@@ -69,30 +69,28 @@ else:
 
 # --- Flask-RESTful Setup ---
 api = Api(app, prefix="/api")
-from core.controllers.conference_controller import ConferenceCreateResource, ConferenceListResource
+from core.controllers.conference_controller import (
+    ConferenceCreateResource,
+    ConferenceListResource,
+)
 from core.controllers.conference_controller import ConferenceDetailResource
 from core.controllers.conference_controller import AssignReviewerResource
 from core.controllers.conference_controller import SubmitReviewResource
 from core.controllers.conference_controller import PaperReviewsResource
 
 
-
-
-
 # --- Register API Resources (Controllers) ---
 # from core.controllers.user_resource import UserListResource, UserResource
 # api.add_resource(UserListResource, '/users')
 # api.add_resource(UserResource, '/users/<string:user_id>')
-api.add_resource(ConferenceCreateResource, '/conferences')
-api.add_resource(ConferenceListResource, '/conferences')
-api.add_resource(ConferenceDetailResource, '/conferences/<string:conf_id>')
-api.add_resource(AssignReviewerResource, '/conferences/<string:conf_id>/assign-reviewer')
-api.add_resource(SubmitReviewResource, '/papers/<string:paper_id>/review')
-api.add_resource(PaperReviewsResource, '/papers/<string:paper_id>/reviews')
-
-
-
-
+api.add_resource(ConferenceCreateResource, "/conferences")
+api.add_resource(ConferenceListResource, "/conferences")
+api.add_resource(ConferenceDetailResource, "/conferences/<string:conf_id>")
+api.add_resource(
+    AssignReviewerResource, "/conferences/<string:conf_id>/assign-reviewer"
+)
+api.add_resource(SubmitReviewResource, "/papers/<string:paper_id>/review")
+api.add_resource(PaperReviewsResource, "/papers/<string:paper_id>/reviews")
 
 
 # --- Basic Routes ---
@@ -117,9 +115,23 @@ def not_found_error(error):
     if request.path.startswith(api.prefix):
         return jsonify({"error": "API endpoint not found"}), 404
 
-    if app.static_folder and os.path.exists(os.path.join(app.static_folder, "index.html")):
-        common_static_extensions = ['.css', '.js', '.png', '.jpg', '.jpeg', '.gif', '.ico', '.json', '.txt']
-        if not any(request.path.lower().endswith(ext) for ext in common_static_extensions):
+    if app.static_folder and os.path.exists(
+        os.path.join(app.static_folder, "index.html")
+    ):
+        common_static_extensions = [
+            ".css",
+            ".js",
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".gif",
+            ".ico",
+            ".json",
+            ".txt",
+        ]
+        if not any(
+            request.path.lower().endswith(ext) for ext in common_static_extensions
+        ):
             return send_from_directory(app.static_folder, "index.html"), 200
     return jsonify({"error": "Resource not found"}), 404
 
