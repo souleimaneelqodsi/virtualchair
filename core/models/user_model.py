@@ -90,20 +90,12 @@ class UserModel:
     def get_by_id(self, id):
         if not id:
             raise ValueError("ID is required.")
-        return (
-            g.db_session.query(User)
-            .filter_by(id=id)
-            .first()
-        )
+        return g.db_session.query(User).filter_by(id=id).first()
 
     def get_by_email(self, email):
         if not email:
             raise ValueError("Email is required.")
-        return (
-            g.db_session.query(User)
-            .filter_by(email=email.strip().lower())
-            .first()
-        )
+        return g.db_session.query(User).filter_by(email=email.strip().lower()).first()
 
     def get_all_users(self):
         return g.db_session.query(User).all()

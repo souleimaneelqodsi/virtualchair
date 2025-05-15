@@ -29,6 +29,7 @@ class RegisterResource(Resource):
         except Exception as e:
             return {"error": str(e)}, 500
 
+
 class LoginResource(Resource):
     def post(self):
         try:
@@ -52,6 +53,7 @@ class LoginResource(Resource):
         except Exception as e:
             return {"error": str(e)}, 500
 
+
 class LogoutResource(Resource):
     @login_required
     def post(self):
@@ -61,10 +63,11 @@ class LogoutResource(Resource):
         except Exception as e:
             return {"error": str(e)}, 500
 
+
 class UserByIdResource(Resource):
     @login_required
     def get(self, user_id):
-        try :
+        try:
             if not user_id:
                 return {"error": "Invalid request"}, 400
             user = UserModel().get_by_id(user_id)
@@ -78,10 +81,11 @@ class UserByIdResource(Resource):
         except Exception as e:
             return {"error": str(e)}, 500
 
+
 class UserByUsernameResource(Resource):
     @login_required
     def get(self, username):
-        try :
+        try:
             if not username:
                 return {"error": "Invalid request"}, 400
             user = UserModel().get_by_username(username)
@@ -95,10 +99,11 @@ class UserByUsernameResource(Resource):
         except Exception as e:
             return {"error": str(e)}, 500
 
+
 class UserByEmailResource(Resource):
     @login_required
     def get(self, email):
-        try :
+        try:
             if not email:
                 return {"error": "Invalid request"}, 400
             user = UserModel().get_by_email(email)
@@ -111,6 +116,7 @@ class UserByEmailResource(Resource):
             }, 200
         except Exception as e:
             return {"error": str(e)}, 500
+
 
 class AllUsersResource(Resource):
     @login_required
