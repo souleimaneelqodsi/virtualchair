@@ -218,6 +218,46 @@ nav ul li a:hover {
 
 
 
+/*style de la page inscription*/
+.signup-form {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.signup-form h2 {
+  color: #005f73;
+  text-align: center;
+}
+
+.signup-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.signup-form input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.signup-form .vc-btn.primary {
+  margin-top: 10px;
+}
+
+.form-message {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+}
 
 
 
