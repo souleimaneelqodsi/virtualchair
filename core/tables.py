@@ -17,6 +17,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 
+from flask_login import UserMixin
 
 from app import Base
 
@@ -45,7 +46,7 @@ class EvaluationRecommendationEnum(enum.Enum):
     STRONG_REJECT = "Strong Reject"
 
 
-class User(Base):
+class User(Base, UserMixin):
     """
     Represents a user in the system.
     Corresponds to the 'utilisateur' table in the design document.
