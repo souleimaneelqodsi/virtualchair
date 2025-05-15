@@ -1,0 +1,40 @@
+/* style/conference-detail.css */
+
+.conference-detail {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 40px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+  }
+  
+  .conference-detail h3 {
+    color: #005f73;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .conference-detail p {
+    color: #333;
+    margin: 10px 0;
+  }
+  
+  .conference-detail .vc-btn.primary {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #ee6c4d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .conference-detail .vc-btn.primary:hover {
+    background-color: #d65a3f;
+  }
+  
