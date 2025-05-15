@@ -2,30 +2,29 @@ import os
 from flask import Flask, send_from_directory, jsonify, abort, request, g
 from flask_restful import Api
 from flask_login import LoginManager
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+
+
 import boto3
 
 from config import Config
 
+from database import engine, SessionLocal, Base
+
+
 app = Flask(__name__, static_folder="../static", static_url_path="/static")
 app.config.from_object(Config)
 
-# --- SQLAlchemy Setup ---
+
 if not app.config["SQLALCHEMY_DATABASE_URI"]:
     raise RuntimeError(
         "SQLALCHEMY_DATABASE_URI is not set. Please check your .env file and config.py."
     )
 
-engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+
 login_manager = LoginManager()
 
 
 def init_db():
-    import tables
-
     print("Initializing database and creating tables (if they don't exist)...")
     try:
         Base.metadata.create_all(bind=engine)
@@ -37,7 +36,6 @@ def init_db():
         raise
 
 
-# --- Boto3 S3 Client Setup ---
 if not (
     app.config["AWS_ACCESS_KEY_ID"]
     and app.config["AWS_SECRET_ACCESS_KEY"]
@@ -69,13 +67,11 @@ else:
         s3_client = None
         s3_resource = None
 
-# --- Flask-RESTful Setup ---
+
 api = Api(app, prefix="/api")
 
 
-# --- Register API Resources (Controllers) ---
-
-from .controllers import (
+from controllers import (
     RegisterResource,
     LoginResource,
     LogoutResource,
@@ -99,7 +95,6 @@ api.add_resource(ConferenceListCreateResource, "/conferences")
 api.add_resource(ConferenceDetailResource, "/conferences/<string:conf_id>")
 
 
-# --- Post/pre-request ---
 @app.before_request
 def create_session():
     g.db_session = SessionLocal()
@@ -112,7 +107,6 @@ def close_session(exception=None):
         session.close()
 
 
-# --- Basic Routes ---
 @app.route("/")
 def serve_index():
     if app.static_folder:
@@ -170,7 +164,7 @@ def load_user(user_id_str):
         try:
             return g.db_session.query(User).get(user_id_str)
         except Exception as e:
-            print(f"Error in load_user: {e}")  # Pour le débogage
+            print(f"Error in load_user: {e}")
             return None
     return None
 

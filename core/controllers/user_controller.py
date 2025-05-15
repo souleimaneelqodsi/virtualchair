@@ -1,7 +1,16 @@
 from flask_restful import Resource
 from flask_login import login_user, logout_user, login_required
-from flask import request, g
-from ..models import UserModel
+from flask import request
+import sys
+import os
+
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.join(current_dir, "..", "..")
+sys.path.append(parent_dir)
+
+
+from core.models import UserModel
 
 
 class RegisterResource(Resource):

@@ -19,7 +19,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from flask_login import UserMixin
 
-from app import Base
+from database import Base
 
 
 class PaperStatusEnum(enum.Enum):

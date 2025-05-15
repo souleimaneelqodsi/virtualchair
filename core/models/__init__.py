@@ -1,4 +1,4 @@
-from ..tables import (
+from core.tables import (
     User,
     Conference,
     Paper,

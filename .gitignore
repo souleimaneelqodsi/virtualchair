@@ -8,3 +8,4 @@ venv
 .env
 pyrightconfig.json
 core/__pycache__
+core/controllers/__pycache__

@@ -1,4 +1,4 @@
-from ..tables import User
+from core.tables import User
 from flask import g
 import bcrypt
 from email_validator import validate_email, EmailNotValidError

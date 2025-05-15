@@ -1,7 +1,7 @@
 from flask import g
 from datetime import datetime
-from ..tables import Conference, User
-from ..tables import ConferenceRoleEnum
+from core.tables import Conference, User
+from core.tables import ConferenceRoleEnum
 
 
 class ConferenceModel:
@@ -87,7 +87,7 @@ class ConferenceModel:
             )
 
     def is_user_chair_of_conference(self, user_id: str, conference_id: str) -> bool:
-        from ..tables import ConferenceRole
+        from core.tables import ConferenceRole
 
         if not user_id or not conference_id:
             return False

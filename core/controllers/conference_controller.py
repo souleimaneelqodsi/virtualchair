@@ -3,7 +3,7 @@ from flask_restful import Resource
 from flask_login import login_required, current_user
 from datetime import datetime
 
-from ..models.conference_model import ConferenceModel
+from models.conference_model import ConferenceModel
 
 
 class ConferenceListCreateResource(Resource):
