@@ -5,6 +5,7 @@ from datetime import datetime
 
 from ..models.conference_model import ConferenceModel
 
+
 class ConferenceListCreateResource(Resource):
     def get(self):
         conference_service = ConferenceModel()
