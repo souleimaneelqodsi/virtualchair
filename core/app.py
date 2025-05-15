@@ -74,12 +74,15 @@ else:
 api = Api(app, prefix="/api")
 
 # --- Register API Resources (Controllers) ---
-from .controllers import RegisterResource, LoginResource, LogoutResource
+from .controllers import RegisterResource, LoginResource, LogoutResource, UserByIdResource, UserByUsernameResource, UserByEmailResource, AllUsersResource
 
 api.add_resource(RegisterResource, "/users/register")
 api.add_resource(LoginResource, "/users/login")
 api.add_resource(LogoutResource, "/users/logout")
-
+api.add_resource(UserByIdResource, "/users/<string:user_id>")
+api.add_resource(UserByUsernameResource, "/users/<string:username>")
+api.add_resource(UserByEmailResource, "/users/<string:email>")
+api.add_resource(AllUsersResource, "/users")
 
 # --- Post/pre-request ---
 @app.before_request

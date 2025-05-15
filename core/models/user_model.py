@@ -104,3 +104,6 @@ class UserModel:
             .filter_by(email=email.strip().lower())
             .first()
         )
+
+    def get_all_users(self):
+        return g.db_session.query(User).all()
