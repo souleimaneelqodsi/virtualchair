@@ -32,33 +32,8 @@
 
 ### 📦 Installation
 
-1. **Clone the repository** :
-   ```bash
-   git clone https://github.com/souleimaneelqodsi/virtualchair.git
-   ```
-
-2. **Navigate to the project directory** :
-   ```bash
-   cd virtualchair
-   ```
-
-3. **Install dependencies** :
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Set up the database** :
-   ```bash
-   flask db upgrade
-   ```
-
-5. **Run the application** :
-   ```bash
-   flask run
-   ```
-
----
-
+See the [INSTALL](INSTLALL) file for details.
+ 
 ### 📄 License
 
 See the [LICENSE](LICENSE) file for details.
