@@ -32,7 +32,7 @@
 
 ### 📦 Installation
 
-See the [INSTALL](INSTLALL.pdf) file for details.
+See the [INSTALL](INSTALL.pdf) file for details.
  
 ### 📄 License
 
