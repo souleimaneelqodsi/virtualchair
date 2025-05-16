@@ -1,6 +1,8 @@
 from flask_restful import Resource
 from flask_login import login_user, logout_user, login_required
 from flask import request, g
+
+
 from ..models import UserModel
 
 
@@ -20,14 +22,19 @@ class RegisterResource(Resource):
             user_data = user.register(data["username"], data["email"], data["password"])
             login_user(user_data)
             return {
-                "id": user_data.id,
+                "id": str(user_data.id),
                 "email": user_data.email,
                 "username": user_data.username,
             }, 201
         except ValueError as e:
+            print(f"ValueError during registration: {e}")
             return {"error": str(e)}, 400
         except Exception as e:
-            return {"error": str(e)}, 500
+            print(f"Unexpected error during registration: {e}")
+            import traceback
+
+            traceback.print_exc()
+            return {"error": "Internal server error"}, 500
 
 
 class LoginResource(Resource):
@@ -40,18 +47,22 @@ class LoginResource(Resource):
                 return {"error": "Invalid request"}, 400
             user = UserModel()
             user_data = user.get_by_email(data["email"])
-            if not user_data or not user_data.check_password(data["password"]):
+            if not user_data:
                 return {"error": "Invalid credentials"}, 401
             login_user(user_data)
             return {
-                "id": user_data.id,
+                "id": str(user_data.id),
                 "email": user_data.email,
                 "username": user_data.username,
             }, 200
         except ValueError as e:
             return {"error": str(e)}, 400
         except Exception as e:
-            return {"error": str(e)}, 500
+            print(f"Unexpected error during login: {e}")
+            import traceback
+
+            traceback.print_exc()
+            return {"error": "Internal server error"}, 500
 
 
 class LogoutResource(Resource):
@@ -61,7 +72,11 @@ class LogoutResource(Resource):
             logout_user()
             return {"message": "Logged out successfully"}, 200
         except Exception as e:
-            return {"error": str(e)}, 500
+            print(f"Unexpected error during logout: {e}")
+            import traceback
+
+            traceback.print_exc()
+            return {"error": "Internal server error"}, 500
 
 
 class UserByIdResource(Resource):
@@ -72,14 +87,18 @@ class UserByIdResource(Resource):
                 return {"error": "Invalid request"}, 400
             user = UserModel().get_by_id(user_id)
             if not user:
-                return {"message": "Unauthorized"}, 401
+                return {"message": "User not found"}, 404
             return {
-                "id": user.id,
+                "id": str(user.id),
                 "email": user.email,
                 "username": user.username,
             }, 200
         except Exception as e:
-            return {"error": str(e)}, 500
+            print(f"Unexpected error getting user by ID: {e}")
+            import traceback
+
+            traceback.print_exc()
+            return {"error": "Internal server error"}, 500
 
 
 class UserByUsernameResource(Resource):
@@ -90,14 +109,18 @@ class UserByUsernameResource(Resource):
                 return {"error": "Invalid request"}, 400
             user = UserModel().get_by_username(username)
             if not user:
-                return {"message": "Unauthorized"}, 401
+                return {"message": "User not found"}, 404
             return {
-                "id": user.id,
+                "id": str(user.id),
                 "email": user.email,
                 "username": user.username,
             }, 200
         except Exception as e:
-            return {"error": str(e)}, 500
+            print(f"Unexpected error getting user by username: {e}")
+            import traceback
+
+            traceback.print_exc()
+            return {"error": "Internal server error"}, 500
 
 
 class UserByEmailResource(Resource):
@@ -108,14 +131,18 @@ class UserByEmailResource(Resource):
                 return {"error": "Invalid request"}, 400
             user = UserModel().get_by_email(email)
             if not user:
-                return {"message": "Unauthorized"}, 401
+                return {"message": "User not found"}, 404
             return {
-                "id": user.id,
+                "id": str(user.id),
                 "email": user.email,
                 "username": user.username,
             }, 200
         except Exception as e:
-            return {"error": str(e)}, 500
+            print(f"Unexpected error getting user by email: {e}")
+            import traceback
+
+            traceback.print_exc()
+            return {"error": "Internal server error"}, 500
 
 
 class AllUsersResource(Resource):
@@ -128,7 +155,7 @@ class AllUsersResource(Resource):
             return {
                 "users": [
                     {
-                        "id": user.id,
+                        "id": str(user.id),
                         "email": user.email,
                         "username": user.username,
                     }
@@ -136,4 +163,8 @@ class AllUsersResource(Resource):
                 ]
             }, 200
         except Exception as e:
-            return {"error": str(e)}, 500
+            print(f"Unexpected error getting all users: {e}")
+            import traceback
+
+            traceback.print_exc()
+            return {"error": "Internal server error"}, 500

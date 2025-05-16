@@ -1,9 +1,24 @@
-from flask import request, g
+from flask import request, g, current_app
 from flask_restful import Resource
 from flask_login import login_required, current_user
 from datetime import datetime
 
 from ..models.conference_model import ConferenceModel
+from ..models.paper_model import PaperModel
+
+
+def format_date_or_none(date_obj):
+    if isinstance(date_obj, datetime):
+        return date_obj.date().isoformat()
+    elif date_obj is not None and hasattr(date_obj, 'isoformat'):
+        return date_obj.isoformat()
+    return None
+
+
+def format_datetime_or_none(datetime_obj):
+    if datetime_obj:
+        return datetime_obj.isoformat()
+    return None
 
 
 class ConferenceListCreateResource(Resource):
@@ -17,25 +32,24 @@ class ConferenceListCreateResource(Resource):
                     "id": str(conf.id),
                     "name": conf.name,
                     "description": conf.description,
-                    "start_date": str(conf.start_date) if conf.start_date else None,
-                    "end_date": str(conf.end_date) if conf.end_date else None,
+                    "start_date": format_date_or_none(conf.start_date),
+                    "end_date": format_date_or_none(conf.end_date),
                     "location": conf.location,
-                    "submission_deadline": conf.submission_deadline.isoformat()
-                    if conf.submission_deadline
-                    else None,
+                    "submission_deadline": format_datetime_or_none(
+                        conf.submission_deadline
+                    ),
                     "current_phase": conf.current_phase,
-                    "created_at": conf.created_at.isoformat()
-                    if conf.created_at
-                    else None,
+                    "created_at": format_datetime_or_none(conf.created_at),
                     "creator_id": str(conf.creator_id),
                 }
                 for conf in conferences
             ]
             return result, 200
         except ValueError as e:
+            current_app.logger.error(f"ValueError in GET /conferences: {e}")
             return {"error": str(e)}, 400
         except Exception as e:
-            print(f"API error in GET /conferences: {e}")
+            current_app.logger.error(f"API error in GET /conferences: {e}", exc_info=True)
             return {
                 "error": "Erreur interne du serveur lors de la récupération des conférences."
             }, 500
@@ -69,7 +83,7 @@ class ConferenceListCreateResource(Resource):
                 location=location,
                 submission_deadline_str=submission_deadline_str,
                 current_phase=current_phase,
-                creator_id=creator_id,
+                creator_id=str(creator_id),
             )
 
             return {
@@ -78,19 +92,22 @@ class ConferenceListCreateResource(Resource):
                     "id": str(new_conference.id),
                     "name": new_conference.name,
                     "description": new_conference.description,
-                    "start_date": str(new_conference.start_date),
-                    "end_date": str(new_conference.end_date),
+                    "start_date": format_date_or_none(new_conference.start_date),
+                    "end_date": format_date_or_none(new_conference.end_date),
                     "location": new_conference.location,
-                    "submission_deadline": new_conference.submission_deadline.isoformat(),
+                    "submission_deadline": format_datetime_or_none(
+                        new_conference.submission_deadline
+                    ),
                     "current_phase": new_conference.current_phase,
-                    "created_at": new_conference.created_at.isoformat(),
+                    "created_at": format_datetime_or_none(new_conference.created_at),
                     "creator_id": str(new_conference.creator_id),
                 },
             }, 201
         except ValueError as e:
+            current_app.logger.error(f"ValueError in POST /conferences: {e}")
             return {"error": str(e)}, 400
         except Exception as e:
-            print(f"API error in POST /conferences: {e}")
+            current_app.logger.error(f"API error in POST /conferences: {e}", exc_info=True)
             return {
                 "error": "Erreur interne du serveur lors de la création de la conférence."
             }, 500
@@ -108,22 +125,35 @@ class ConferenceDetailResource(Resource):
                 "id": str(conference.id),
                 "name": conference.name,
                 "description": conference.description,
-                "start_date": str(conference.start_date)
-                if conference.start_date
-                else None,
-                "end_date": str(conference.end_date) if conference.end_date else None,
+                "start_date": format_date_or_none(conference.start_date),
+                "end_date": format_date_or_none(conference.end_date),
                 "location": conference.location,
-                "submission_deadline": conference.submission_deadline.isoformat()
-                if conference.submission_deadline
-                else None,
+                "submission_deadline": format_datetime_or_none(
+                    conference.submission_deadline
+                ),
                 "current_phase": conference.current_phase,
-                "created_at": conference.created_at.isoformat(),
+                "created_at": format_datetime_or_none(conference.created_at),
                 "creator_id": str(conference.creator_id),
             }, 200
         except ValueError as e:
+            current_app.logger.error(f"ValueError in GET /conferences/{conf_uuid}: {e}")
             return {"error": str(e)}, 400
         except Exception as e:
-            print(f"API error in GET /conferences/{conf_uuid}: {e}")
+            current_app.logger.error(f"API error in GET /conferences/{conf_uuid}: {e}", exc_info=True)
             return {
                 "error": "Erreur interne du serveur lors de la récupération de la conférence."
             }, 500
+
+class ConferenceUserRolesResource(Resource):
+    @login_required
+    def get(self, conf_uuid: str):
+        paper_model = PaperModel()
+        try:
+            user_roles = paper_model.get_user_roles_for_conference(
+                user_id=str(current_user.id),
+                conference_id=conf_uuid
+            )
+            return {"roles": user_roles}, 200
+        except Exception as e:
+            current_app.logger.error(f"API error GET /conferences/{conf_uuid}/my-roles: {e}", exc_info=True)
+            return {"error": "Erreur interne du serveur lors de la récupération des rôles."}, 500

@@ -1,4 +1,4 @@
-from user_controller import (
+from .user_controller import (
     RegisterResource,
     LoginResource,
     LogoutResource,
@@ -8,7 +8,13 @@ from user_controller import (
     AllUsersResource,
 )
 
-from conference_controller import (
+from .conference_controller import (
     ConferenceDetailResource,
     ConferenceListCreateResource,
+    ConferenceUserRolesResource,
+)
+
+from .paper_controller import (
+    PaperListCreateResource,
+    PaperDetailResource,
 )
