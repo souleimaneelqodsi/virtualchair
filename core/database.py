@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from flask import current_app
 
 
-from config import Config
+from .config import Config
 
 
 db_uri = Config.SQLALCHEMY_DATABASE_URI
