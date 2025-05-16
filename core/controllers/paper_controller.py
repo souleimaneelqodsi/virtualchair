@@ -2,7 +2,7 @@ from flask import request, g, current_app
 from flask_restful import Resource
 from flask_login import login_required, current_user
 from ..models.paper_model import PaperModel
-# from ..models.conference_model import ConferenceModel # Not directly needed here now
+
 
 def format_datetime_or_none(dt):
     return dt.isoformat() if dt else None
@@ -10,7 +10,7 @@ def format_datetime_or_none(dt):
 class PaperListCreateResource(Resource):
     @login_required
     def post(self, conf_uuid: str):
-        # ... (file and form data handling remains the same) ...
+
         if 'file' not in request.files:
             return {"error": "Aucun fichier sélectionné dans la requête."}, 400
 
@@ -34,7 +34,7 @@ class PaperListCreateResource(Resource):
                 keywords=keywords,
                 file_storage=file,
                 conference_id=conf_uuid,
-                author_id=current_user.id, # Pass the actual ID
+                author_id=current_user.id,
             )
             return {
                 "message": "Papier soumis avec succès.",
@@ -67,7 +67,7 @@ class PaperListCreateResource(Resource):
             return [{
                 "id": str(p.id),
                 "title": p.title,
-                "status": p.status.value if p.status else None, # Send .value
+                "status": p.status.value if p.status else None,
                 "submitted_at": format_datetime_or_none(p.submitted_at),
                 "author_id": str(p.author_id)
             } for p in papers], 200
@@ -92,7 +92,7 @@ class PaperDetailResource(Resource):
                 "abstract": paper.abstract,
                 "keywords": paper.keywords,
                 "s3_file_url": paper.s3_file_url,
-                "status": paper.status.value if paper.status else None, # Send .value
+                "status": paper.status.value if paper.status else None,
                 "submitted_at": format_datetime_or_none(paper.submitted_at),
                 "last_modified_at": format_datetime_or_none(paper.last_modified_at),
                 "conference_id": str(paper.conference_id),

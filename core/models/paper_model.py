@@ -15,8 +15,8 @@ class PaperModel:
                 .filter_by(user_id=user_id, conference_id=conference_id)
                 .all()
             )
-            # Assuming role_name on the ConferenceRole object is the Python enum member
-            # (due to by_value=True in tables.py for reads)
+
+
             return [role.role_name.value for role in roles_objects if role.role_name]
         except Exception as e:
             current_app.logger.error(f"Error fetching user roles for user {user_id} in conference {conference_id}: {e}", exc_info=True)
@@ -92,7 +92,7 @@ class PaperModel:
             abstract=abstract,
             keywords=keywords,
             s3_file_url=s3_url,
-            status=PaperStatusEnum.SUBMITTED, # Explicitly assign the string value "Submitted"
+            status=PaperStatusEnum.SUBMITTED,
             conference_id=conference_id,
             author_id=author_id,
             submitted_at=datetime.utcnow()
@@ -103,7 +103,7 @@ class PaperModel:
             author_role_entry = ConferenceRole(
                 user_id=author_id,
                 conference_id=conference_id,
-                role_name=ConferenceRoleEnum.AUTHOR.value # Explicitly assign the string value "Author"
+                role_name=ConferenceRoleEnum.AUTHOR.value
             )
             g.db_session.add(author_role_entry)
 

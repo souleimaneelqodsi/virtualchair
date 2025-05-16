@@ -63,8 +63,8 @@ if not (
     and app.config.get("AWS_REGION")
     and app.config.get("S3_BUCKET_NAME")
 ):
-    # If AWS config is incomplete, still initialize app.s3_client/resource to None
-    # to avoid errors later, and log a warning.
+
+
     setattr(app, 's3_client', None)
     setattr(app, 's3_resource', None)
     app.logger.warning(
@@ -84,13 +84,13 @@ else:
             aws_secret_access_key=app.config["AWS_SECRET_ACCESS_KEY"],
             region_name=app.config["AWS_REGION"],
         )
-        # === Add these lines to attach the clients to the app instance ===
+
         setattr(app, 's3_client', s3_client)
         setattr(app, 's3_resource', s3_resource)
-        # ================================================================
+
         app.logger.info("DEBUG APP: S3 client initialized successfully.")
     except Exception as e:
-        # If S3 initialization fails, ensure app.s3_client/resource are None
+
         setattr(app, 's3_client', None)
         setattr(app, 's3_resource', None)
         app.logger.error(f"DEBUG APP: Error initializing S3 client: {e}")
@@ -127,7 +127,7 @@ api.add_resource(ConferenceDetailResource, "/conferences/<string:conf_uuid>")
 api.add_resource(ConferenceUserRolesResource, "/conferences/<string:conf_uuid>/my-roles")
 
 
-# Paper routes
+
 api.add_resource(PaperListCreateResource, "/conferences/<string:conf_uuid>/papers")
 api.add_resource(PaperDetailResource, "/conferences/<string:conf_uuid>/papers/<string:paper_uuid>")
 
@@ -135,11 +135,11 @@ api.add_resource(PaperDetailResource, "/conferences/<string:conf_uuid>/papers/<s
 @app.before_request
 def create_session():
     g.db_session = SessionLocal()
-    # Safely get s3_client and s3_resource from app instance, which might be None
+
     g.s3_client = getattr(current_app, 's3_client', None)
     g.s3_resource = getattr(current_app, 's3_resource', None)
 
-    # print("DEBUG APP Request: g.s3_client is:", g.s3_client is not None)
+
 
 
 @app.teardown_appcontext
@@ -186,7 +186,7 @@ def not_found_error(error):
 
 @app.errorhandler(500)
 def internal_error(error):
-    # Log the error with exception info, which includes traceback
+
     app.logger.error(f"Server Error: {error}", exc_info=True)
     return jsonify({"error": "Internal server error"}), 500
 
@@ -213,7 +213,7 @@ if __name__ == "__main__":
     print("DEBUG APP: Running in __main__ block.")
     init_db()
     print("DEBUG APP: init_db finished. Starting app run.")
-    # Check if engine was successfully created before trying to run the app
+
     if engine is None:
         print("DEBUG APP: Database engine failed to initialize. Cannot run app.")
     else:

@@ -11,7 +11,7 @@ from .user_controller import (
 from .conference_controller import (
     ConferenceDetailResource,
     ConferenceListCreateResource,
-    ConferenceUserRolesResource, # We will add this next
+    ConferenceUserRolesResource,
 )
 
 from .paper_controller import (

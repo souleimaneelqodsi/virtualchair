@@ -22,7 +22,7 @@ from flask_login import UserMixin
 from .database import Base
 
 
-# Python Enum classes
+
 class PaperStatusEnum(enum.Enum):
     SUBMITTED = "Submitted"
     UNDER_REVIEW = "Under Review"
@@ -93,10 +93,10 @@ class Paper(Base):
             name='paperstatusenum',
             native_enum=True,
             create_type=False,
-            # Removed by_value=True, relying on explicit .value in models for writes
-            # and hoping native_enum=True correctly maps DB string to Python enum object on reads.
+
+
         ),
-        default=PaperStatusEnum.SUBMITTED, # Default with the string value
+        default=PaperStatusEnum.SUBMITTED,
         nullable=False,
     )
     submitted_at = Column(DateTime, default=datetime.utcnow, nullable=False)
@@ -122,7 +122,7 @@ class Evaluation(Base):
             native_enum=True,
             create_type=False
         ),
-        nullable=True # Default will be None (Python None -> DB NULL)
+        nullable=True
     )
     submitted_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     deadline = Column(DateTime, nullable=True)
@@ -152,5 +152,5 @@ class ConferenceRole(Base):
     user = relationship("User", back_populates="conference_roles")
     conference = relationship("Conference", back_populates="conference_roles")
     __table_args__ = (UniqueConstraint("user_id", "conference_id", "role_name", name="uq_conference_user_role"),)
-    # When reading, if role_name becomes the Python enum object, access .value for string.
+
     def __repr__(self): return f"<ConferenceRole: User {self.user_id} as {self.role_name.value if isinstance(self.role_name, enum.Enum) else self.role_name} in Conf {self.conference_id}>"

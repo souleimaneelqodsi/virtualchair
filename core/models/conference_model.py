@@ -1,6 +1,6 @@
 from flask import g, current_app
 from datetime import datetime
-from ..tables import Conference, User, ConferenceRole, ConferenceRoleEnum # Ensure ConferenceRoleEnum is imported
+from ..tables import Conference, User, ConferenceRole, ConferenceRoleEnum
 
 
 class ConferenceModel:
@@ -46,7 +46,7 @@ class ConferenceModel:
             chair_role = ConferenceRole(
                 user_id=creator_id,
                 conference_id=new_conference.id,
-                role_name=ConferenceRoleEnum.CHAIR.value # Explicitly assign the string value "Chair"
+                role_name=ConferenceRoleEnum.CHAIR.value
             )
             g.db_session.add(chair_role)
 
@@ -76,8 +76,8 @@ class ConferenceModel:
     def is_user_chair_of_conference(self, user_id: str, conference_id: str) -> bool:
         if not user_id or not conference_id: return False
         try:
-            # When querying, role_name will be the Python enum member if by_value=True was working for reads,
-            # or the string from DB. To be safe, compare against .value.
+
+
             role = g.db_session.query(ConferenceRole).filter_by(
                 user_id=user_id,
                 conference_id=conference_id,

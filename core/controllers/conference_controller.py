@@ -4,13 +4,13 @@ from flask_login import login_required, current_user
 from datetime import datetime
 
 from ..models.conference_model import ConferenceModel
-from ..models.paper_model import PaperModel # For get_user_roles_for_conference
+from ..models.paper_model import PaperModel
 
 
 def format_date_or_none(date_obj):
     if isinstance(date_obj, datetime):
         return date_obj.date().isoformat()
-    elif date_obj is not None and hasattr(date_obj, 'isoformat'): # Check if it's a date/datetime like object
+    elif date_obj is not None and hasattr(date_obj, 'isoformat'):
         return date_obj.isoformat()
     return None
 
@@ -83,7 +83,7 @@ class ConferenceListCreateResource(Resource):
                 location=location,
                 submission_deadline_str=submission_deadline_str,
                 current_phase=current_phase,
-                creator_id=str(creator_id), # Ensure creator_id is string for model
+                creator_id=str(creator_id),
             )
 
             return {
@@ -147,7 +147,7 @@ class ConferenceDetailResource(Resource):
 class ConferenceUserRolesResource(Resource):
     @login_required
     def get(self, conf_uuid: str):
-        paper_model = PaperModel() # Contains get_user_roles_for_conference
+        paper_model = PaperModel()
         try:
             user_roles = paper_model.get_user_roles_for_conference(
                 user_id=str(current_user.id),
